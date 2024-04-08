@@ -5,13 +5,24 @@
 /// Napišite funkcijo `fib`, ki sprejme začetna člena fibbonacijevega zaporedja, število `n` in vrne `n`-ti člen zaporedja
 
 fn fib(a0: u32, a1: u32, n: u32) -> u32 {
-    panic!("Not implemented");
+    match n {
+        0 =>  a0,
+        1 =>  a1,
+        _ => fib(a1, a1 + a0, n-1)
+    }
 }
+
 
 /// ------------------------------------------------------------------------------------------------
 
 /// Napišite funkcijo `je_prestopno`, ki za podano leto preveri, ali je prestopno
-
+fn je_prestopno(leto: u32) -> bool {
+    if leto % 4 == 0 {
+        return true;
+    } else {
+        return false;
+    }
+}
 /// ------------------------------------------------------------------------------------------------
 
 /// Napišite funkcijo `je_veljaven_datum(datum: Date) -> bool`, ki preveri, ali je datum veljaven
@@ -19,11 +30,35 @@ fn fib(a0: u32, a1: u32, n: u32) -> u32 {
 // Dan, mesec, leto
 type Date = (u32, u32, u32);
 
+fn je_veljaven_datum(datum: Date) -> bool {
+    let (dan, mesec, leto) = datum;
+    if dan < 1 || mesec < 1 || leto < 1 || dan > 31 || mesec > 12 {
+        return false;
+    } 
+    else if mesec == 1 || mesec == 3 || mesec == 5 || mesec == 7 || mesec == 8 || mesec == 10 || mesec == 12 && dan > 31 {
+        return false;
+    }
+    else if mesec == 4 || mesec == 6 || mesec == 9 || mesec== 11 && dan > 30 {
+        return false;
+    }
+    else if mesec == 2 && je_prestopno(leto) && dan > 29 {
+        return false;
+    }  
+    else if mesec == 2 && dan > 28 {
+        return false;
+    } 
+    else {
+        return true;
+    }
+}
+
 /// ------------------------------------------------------------------------------------------------
 
 /// Napišite funkcijo `iteracija(mut start: u32, fun: fn(u32) -> u32, cond: fn(u32) -> bool) -> u32`, ki sprejme iteracijsko funkcijo, zaustavitveni pogoj in začetno vrednost.
 /// Iteracijsko funkcijo zaporedoma uporablja, dokler za rezultat ne velja zaustavitveni pogoj, in vrne prvi rezultat, ki zadošča zaustavitvenemu pogoju.
-
+fn iteracija(mut start: u32, fun: fn(u32) -> u32, cond: fn(u32) -> bool) -> u32 {
+    
+}
 /// ------------------------------------------------------------------------------------------------
 
 /// Napišite funkcijo, ki izračuna ničlo zvezne funkcije s pomočjo bisekcije.
@@ -97,7 +132,7 @@ mod tests {
     }
 
     #[test]
-    fn test_fib() {
+    fn test_funkcij() {
         assert_eq!(fib(0, 1, 0), 0);
         assert_eq!(fib(0, 1, 1), 1);
         assert_eq!(fib(0, 1, 2), 1);
@@ -111,3 +146,4 @@ mod tests {
         assert_eq!(fib(0, 1, 10), 55);
     }
 }
+
